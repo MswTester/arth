@@ -38,7 +38,7 @@ api(app);
 handle(io);
 
 // Start the server
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0", () => {
     Logger.bracket('ARTH', 'blue', `Server listening on port *:${PORT}`);
     const ifaces = os.networkInterfaces();
     Object.keys(ifaces).forEach((ifname) => {
