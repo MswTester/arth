@@ -70,4 +70,18 @@ const Float = styled(Div)<{
     transform: ${props => props.$position === 'center' ? 'translate(-50%, -50%)' : 'none'};
 `;
 
-export { Div, Flex, Row, Column, Container, Overlay, Float };
+const Text = styled(Div)<{
+    $size?: string;
+    $weight?: string;
+    $color?: string;
+    $align?: 'left' | 'right' | 'center' | 'justify';
+    $transform?: 'uppercase' | 'lowercase' | 'capitalize';
+}>`
+    font-size: ${props => props.$size || '16px'};
+    font-weight: ${props => props.$weight || 400};
+    color: ${props => props.$color || 'black'};
+    text-align: ${props => props.$align || 'left'};
+    text-transform: ${props => props.$transform || 'none'};
+`;
+
+export { Div, Flex, Row, Column, Container, Overlay, Float, Text };
