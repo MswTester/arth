@@ -54,7 +54,7 @@ if(!existsSync(dir_db)){
 // Define the API routes;
 cloud(app, dir_cloud);
 db(app, dir_db);
-sys(app)
+sys(app);
 
 // Serve static files from the client directory
 app.use(express.static(client));
