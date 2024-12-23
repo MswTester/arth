@@ -2,6 +2,7 @@ import { exec, execSync } from "child_process";
 import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import { promisify } from "util";
+import Logger from "../../lib/pretty-logger";
 
 const execAsync = promisify(exec);
 
@@ -71,7 +72,7 @@ export const getStorage = async () => {
     const lines = stdout.split('\n');
     lines.shift();
     const storageInfo: Record<string, any> = {};
-    lines.forEach((line, i:number) => {
+    lines.filter(line => line.trim()).forEach((line, i:number) => {
         const [filesystem, _size, _used, _available, _capacity, mounted] = line.trim().split(/\s+/);
         const name = i === 0 ? 'root' : 'storage';
         const size = parseInt(_size, 10);
