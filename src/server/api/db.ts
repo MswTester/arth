@@ -1,10 +1,11 @@
 import { Express } from 'express';
 import { readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
 
 const db = (app: Express, dbDir:string) => {
     const read = (path: string) => {
         try {
-            const data = readFileSync(`${dbDir}${path}`, 'utf-8');
+            const data = readFileSync(join(dbDir, path), 'utf-8');
             return JSON.parse(data);
         } catch (error) {
             console.error('Error reading file:', error);
@@ -13,7 +14,7 @@ const db = (app: Express, dbDir:string) => {
     };
     const write = (path: string, data: object) => {
         try {
-            writeFileSync(`${dbDir}${path}`, JSON.stringify(data, null, 2));
+            writeFileSync(join(dbDir, path), JSON.stringify(data, null, 4), 'utf-8');
         } catch (error) {
             console.error('Error writing file:', error);
         }

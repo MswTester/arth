@@ -1,11 +1,7 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
-const sys = (io: Server) => {
-    io.on('connection', (socket) => {
-      
-        socket.on('disconnect', (data) => {
-        });
-    });
+const sys = (socket: Socket, io: Server) => {
+    socket.on('disconnect', (data) => {});
 }
 
 export default sys;

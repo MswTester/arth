@@ -10,6 +10,7 @@ import db from './api/db';
 import Config from '../lib/config-reader';
 import { existsSync, mkdirSync } from 'fs';
 import sys from './api/sys';
+import { publicCors } from './lib/cors';
 
 // Create an Express app and an HTTP server
 const app = express();
@@ -57,8 +58,9 @@ db(app, dir_db);
 sys(app);
 
 // Serve static files from the client directory
-app.use(express.static(client));
+app.use(publicCors);
 app.use(express.static(publicPath));
+app.use(express.static(client));
 app.get('*', (req, res) => {
     res.sendFile(path.join(publicPath, '/index.html'));
 });

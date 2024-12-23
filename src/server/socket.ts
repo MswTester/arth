@@ -8,13 +8,15 @@ const log = (id: string, ...args: any[]) => Logger.header(`(${id})`, 'yellow', .
 const handle = (io: Server) => {
     io.on('connection', (socket) => {
         log(socket.id, 'Client connected');
-      
+
+        // Handle socket events
+        sys(socket, io);
+        zone(socket, io);
+
         socket.on('disconnect', (data) => {
             log(socket.id, 'Client disconnected');
         });
     });
-    sys(io);
-    zone(io);
 }
 
 export default handle;

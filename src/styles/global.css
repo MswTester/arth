@@ -12,7 +12,23 @@ html, body{
     overflow: hidden;
 }
 
+#root{
+    /* default */
+    width: 100%;
+    height: 100%;
+}
 :root{
+    /* font weight vars */
+    --strong: 700;
+    --medium: 500;
+    --regular: 400;
+    --light: 300;
+    /* font size vars */
+    --title: 2rem;
+    --headline: 1.5rem;
+    --body: 1rem;
+    --paragraph: 0.8rem;
+    /* color vars */
     --primary: #f5f5f5;
     --secondary: #333;
     --tertiary: #f0f0f0;
