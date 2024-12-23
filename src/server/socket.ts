@@ -3,7 +3,7 @@ import Logger from "../lib/pretty-logger";
 import zone from "./socket/zone";
 import sys from "./socket/sys";
 
-const log = (id: string, ...args: any[]) => Logger.header(`(${id})`, 'black', ...args);
+const log = (id: string, ...args: any[]) => Logger.header(`(${id})`, 'yellow', ...args);
 
 const handle = (io: Server) => {
     io.on('connection', (socket) => {

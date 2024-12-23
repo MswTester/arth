@@ -7,7 +7,8 @@ import Logger from '../lib/pretty-logger';
 import os from 'os';
 import cloud from './api/cloud';
 import db from './api/db';
-import { readFileSync } from 'fs';
+import Config from '../lib/config-reader';
+import { isHost } from '../lib/util/funclib';
 
 // Create an Express app and an HTTP server
 const app = express();
@@ -26,34 +27,35 @@ const PORT = 3000;
 // Define the paths to the root and client directories
 export const root = path.join(__dirname, '/../..');
 const client = path.join(root, '/dist/client');
+const publicPath = path.join(root, '/public');
 
 // Directory setup
 const dir = path.join(root, 'dir');
-const config:Record<string, any> = Object.fromEntries(readFileSync(path.join(dir, '.config'), 'utf-8').split('\n').map((line) => line.split('=')));
+const config:Record<string, any> = Config.read(path.join(dir, '.config'))
 const dir_root = path.join(dir, config.root || '/');
 const dir_cloud = path.join(dir, config.cloud || '/cloud');
 const dir_db = path.join(dir, config.db || '/db');
 
-Logger.log("Root:", dir_cloud);
-Logger.log("Cloud:", dir_cloud);
-Logger.log("DB:", dir_db);
-
 // Serve static files from the client directory
 app.use(express.static(client));
+app.use(express.static(publicPath));
 app.get('*', (req, res) => {
-    res.sendFile(path.join(root, 'public/index.html'));
+    res.sendFile(path.join(publicPath, '/index.html'));
 });
 
 // Define the API routes
-cloud(app);
-db(app);
+cloud(app, dir_cloud);
+db(app, dir_db);
 
 // Handle socket connections
 handle(io);
 
 // Start the server
 server.listen(PORT, "0.0.0.0", () => {
-    Logger.bracket('ARTH', 'blue', `Server listening on port *:${PORT}`);
+    const version = process.env.npm_package_version;
+    const startText = `========== ARTH v${version} ==========`;
+    console.log(`${Logger.color.bright}${Logger.color.fg.green}${startText}`, Logger.color.reset);
+    Logger.info(`Server listening on port *:${PORT}`);
     const ifaces = os.networkInterfaces();
     Object.keys(ifaces).forEach((ifname) => {
         ifaces[ifname]?.forEach((iface) => {

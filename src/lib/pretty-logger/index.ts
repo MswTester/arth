@@ -73,6 +73,11 @@ class Logger {
         const header = `${Logger.color.fg[color.toLowerCase()]}${_header}${Logger.color.reset}`;
         console.log(header, ...args);
     }
+
+    static colored(color: Color, ...args: any[]) {
+        const header = `${Logger.color.fg[color.toLowerCase()]}`;
+        console.log(header, ...args, Logger.color.reset);
+    }
 }
 
 export default Logger;
