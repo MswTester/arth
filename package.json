@@ -1,7 +1,7 @@
 {
   "name": "arth",
   "version": "0.1.0",
-  "description": "Android Remote Terminal Host",
+  "description": "Android Remote Termux Host",
   "main": "index.js",
   "scripts": {
     "build:client": "esbuild src/client/index.tsx --bundle --outfile=dist/client/index.js --minify --define:process.env.NODE_ENV='\"production\"'",
