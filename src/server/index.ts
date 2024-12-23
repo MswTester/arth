@@ -9,6 +9,7 @@ import cloud from './api/cloud';
 import db from './api/db';
 import Config from '../lib/config-reader';
 import { isHost } from '../lib/util/funclib';
+import { existsSync, mkdirSync } from 'fs';
 
 // Create an Express app and an HTTP server
 const app = express();
@@ -35,6 +36,20 @@ const config:Record<string, any> = Config.read(path.join(dir, '.config'))
 const dir_root = path.join(dir, config.root || '/');
 const dir_cloud = path.join(dir, config.cloud || '/cloud');
 const dir_db = path.join(dir, config.db || '/db');
+
+// Check directories
+if(!existsSync(dir_root)){
+    Logger.warn("Root directory not found. Creating one...");
+    mkdirSync(dir_root);
+}
+if(!existsSync(dir_cloud)){
+    Logger.warn("Cloud directory not found. Creating one...");
+    mkdirSync(dir_cloud);
+}
+if(!existsSync(dir_db)){
+    Logger.warn("Database directory not found. Creating one...");
+    mkdirSync(dir_db);
+}
 
 // Serve static files from the client directory
 app.use(express.static(client));
@@ -70,5 +85,5 @@ server.listen(PORT, "0.0.0.0", () => {
     Logger.info("Hostname:", os.hostname());
     Logger.info("Node version:", process.version);
     const isAndroid = os.platform() === 'android' && os.arch().startsWith('arm');
-    if(!isAndroid) Logger.warn("Host must be in android environment.");
+    if(!isAndroid) Logger.warn("Host must be in android environment to use all features.");
 });
