@@ -51,17 +51,17 @@ if(!existsSync(dir_db)){
     mkdirSync(dir_db);
 }
 
+// Define the API routes;
+cloud(app, dir_cloud);
+db(app, dir_db);
+sys(app)
+
 // Serve static files from the client directory
 app.use(express.static(client));
 app.use(express.static(publicPath));
 app.get('*', (req, res) => {
     res.sendFile(path.join(publicPath, '/index.html'));
 });
-
-// Define the API routes
-cloud(app, dir_cloud);
-db(app, dir_db);
-sys(app);
 
 // Handle socket connections
 handle(io);
