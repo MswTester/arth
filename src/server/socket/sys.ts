@@ -8,4 +8,4 @@ const sys = (io: Server) => {
     });
 }
 
-export default sys
+export default sys;

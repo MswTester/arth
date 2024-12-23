@@ -8,8 +8,8 @@ import os from 'os';
 import cloud from './api/cloud';
 import db from './api/db';
 import Config from '../lib/config-reader';
-import { isHost } from '../lib/util/funclib';
 import { existsSync, mkdirSync } from 'fs';
+import sys from './api/sys';
 
 // Create an Express app and an HTTP server
 const app = express();
@@ -61,6 +61,7 @@ app.get('*', (req, res) => {
 // Define the API routes
 cloud(app, dir_cloud);
 db(app, dir_db);
+sys(app);
 
 // Handle socket connections
 handle(io);
