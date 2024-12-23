@@ -10,8 +10,29 @@ const handle = (io: Server) => {
         log(socket.id, 'Client connected');
 
         // Handle socket events
-        sys(socket, io);
         zone(socket, io);
+
+        // Default socket events
+
+        socket.on('join', (data:string) => {
+            socket.join(data);
+        });
+
+        socket.on('leave', (data:string) => {
+            socket.leave(data);
+        });
+
+        socket.on('message', (data:MessageData) => {
+            socket.to(data.room).emit(data.channel, data.data);
+        });
+
+        socket.on('ping', () => {
+            socket.emit('pong');
+        })
+
+        socket.on('log', (...args: any[]) => {
+            log(socket.id, ...args);
+        });
 
         socket.on('disconnect', (data) => {
             log(socket.id, 'Client disconnected');

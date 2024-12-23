@@ -4,4 +4,4 @@ const zone = (socket: Socket, io: Server) => {
     socket.on('disconnect', (data) => {});
 }
 
-export default zone
+export default zone;

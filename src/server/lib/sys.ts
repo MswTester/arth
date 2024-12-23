@@ -2,7 +2,6 @@ import { exec, execSync } from "child_process";
 import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import { promisify } from "util";
-import Logger from "../../lib/pretty-logger";
 
 const execAsync = promisify(exec);
 

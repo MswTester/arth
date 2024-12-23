@@ -32,3 +32,9 @@ declare enum FilterOption {
     $pull = "$pull",    // Remove Elements by Condition
     $push = "$push"     // Add Elements to Array
 }
+
+interface MessageData {
+    room: string,
+    channel: string,
+    data: any,
+}

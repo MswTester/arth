@@ -11,6 +11,7 @@ import Config from '../lib/config-reader';
 import { existsSync, mkdirSync } from 'fs';
 import sys from './api/sys';
 import { publicCors } from './lib/cors';
+import sysInterval from './socket/sys';
 
 // Create an Express app and an HTTP server
 const app = express();
@@ -23,8 +24,9 @@ const io = new Server(server, {
     },
 });
 
-// Define the port to listen on
+// Define the constants
 const PORT = 3000;
+const INTERVAL = 500;
 
 // Define the paths to the root and client directories
 export const root = path.join(__dirname, '/../..');
@@ -53,7 +55,7 @@ if(!existsSync(dir_db)){
 }
 
 // Define the API routes;
-cloud(app, dir_cloud);
+cloud(app, dir_cloud, io);
 db(app, dir_db);
 sys(app);
 
@@ -64,6 +66,11 @@ app.use(express.static(client));
 app.get('*', (req, res) => {
     res.sendFile(path.join(publicPath, '/index.html'));
 });
+
+// Handle interval updates
+const loop = setInterval(() => {
+    sysInterval(io);
+}, INTERVAL);
 
 // Handle socket connections
 handle(io);
@@ -85,8 +92,26 @@ server.listen(PORT, "0.0.0.0", () => {
     Logger.info("Arch:", os.arch());
     Logger.info("CPUs:", os.cpus().length);
     Logger.info("OS type:", os.type());
-    Logger.info("Hostname:", os.hostname());
+    Logger.info("Hostname:",os.hostname());
+    Logger.info("Username:", os.userInfo());
+    Logger.info("Total memory:", os.totalmem());
+    Logger.info("Free memory:", os.freemem());
+    Logger.info("Uptime:", os.uptime());
+    Logger.info("Load average:", os.loadavg());
+    Logger.info("Release:", os.release());
+    Logger.info("Temp dir:", os.tmpdir());
+    Logger.info("Home dir:", os.homedir());
+    Logger.info(os.machine());
     Logger.info("Node version:", process.version);
     const isAndroid = os.platform() === 'android' && os.arch().startsWith('arm');
     if(!isAndroid) Logger.warn("Host must be in android environment to use all features.");
+});
+
+// Handle server termination
+process.on('SIGINT', () => {
+    clearInterval(loop);
+    server.close(() => {
+        Logger.warn("Server terminated.");
+        process.exit(0);
+    });
 });

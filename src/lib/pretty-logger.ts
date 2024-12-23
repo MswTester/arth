@@ -1,5 +1,7 @@
 // Pretty logger class
 
+import { appendFileSync, writeFileSync } from "fs";
+
 type Color = "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white" | "crimson";
 
 class Logger {
@@ -44,9 +46,21 @@ class Logger {
         console.log(header, ...args);
     }
 
+    static sysInfo(dir: string, ...args: any[]) {
+        const header = `${Logger.color.fg.magenta}[INFO]${Logger.color.reset}`;
+        const timeline = new Date().toISOString();
+        appendFileSync(dir, `\n[${timeline}] ${header} ${args.join(' ')}`);
+    }
+
     static warn(...args: any[]) {
         const header = `${Logger.color.fg.yellow}[WARN]${Logger.color.reset}`;
         console.log(header, ...args);
+    }
+
+    static sysWarn(dir: string, ...args: any[]) {
+        const header = `${Logger.color.fg.yellow}[WARN]${Logger.color.reset}`;
+        const timeline = new Date().toISOString();
+        appendFileSync(dir, `\n[${timeline}] ${header} ${args.join(' ')}`);
     }
 
     static error(...args: any[]) {
@@ -54,14 +68,32 @@ class Logger {
         console.log(header, ...args);
     }
 
+    static sysError(dir: string, ...args: any[]) {
+        const header = `${Logger.color.fg.red}[ERROR]${Logger.color.reset}`;
+        const timeline = new Date().toISOString();
+        appendFileSync(dir, `\n[${timeline}] ${header} ${args.join(' ')}`);
+    }
+
     static success(...args: any[]) {
         const header = `${Logger.color.fg.green}[SUCCESS]${Logger.color.reset}`;
         console.log(header, ...args);
     }
 
+    static sysSuccess(dir: string, ...args: any[]) {
+        const header = `${Logger.color.fg.green}[SUCCESS]${Logger.color.reset}`;
+        const timeline = new Date().toISOString();
+        appendFileSync(dir, `\n[${timeline}] ${header} ${args.join(' ')}`);
+    }
+
     static log(...args: any[]) {
         const header = `${Logger.color.fg.cyan}[LOG]${Logger.color.reset}`;
         console.log(header, ...args);
+    }
+
+    static sysLog(dir: string, ...args: any[]) {
+        const header = `${Logger.color.fg.cyan}[LOG]${Logger.color.reset}`;
+        const timeline = new Date().toISOString();
+        appendFileSync(dir, `\n[${timeline}] ${header} ${args.join(' ')}`);
     }
 
     static bracket(_header: string, color: Color, ...args: any[]) {

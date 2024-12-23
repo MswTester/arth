@@ -1,7 +1,13 @@
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
+import { getBattery, getCPU, getMemory, getStorage } from "../lib/sys";
 
-const sys = (socket: Socket, io: Server) => {
-    socket.on('disconnect', (data) => {});
+const sysInterval = async (io: Server) => {
+    io.to('interval-sys').emit('interval-sys', {
+        cpu: await getCPU(),
+        memory: await getMemory(),
+        storage: await getStorage(),
+        battery: await getBattery(),
+    });
 }
 
-export default sys;
+export default sysInterval;
