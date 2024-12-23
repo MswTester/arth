@@ -1,2 +1,2 @@
 # arth
-Android Remote Terminal Host
+Android Remote Termux Host

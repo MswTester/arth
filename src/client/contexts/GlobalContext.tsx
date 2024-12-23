@@ -4,18 +4,18 @@ import useSocket from "../hooks/useSocket";
 
 interface GlobalContextProps {
     socket: Socket;
-    state: string;
-    setState: Dispatch<SetStateAction<string>>;
+    page: string;
+    setPage: Dispatch<SetStateAction<string>>;
 }
 
 const GlobalContext = createContext<GlobalContextProps|undefined>(undefined);
 
 const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     const socket = useSocket();
-    const [state, setState] = useState<string>('');
+    const [page, setPage] = useState<string>('');
 
     return (
-        <GlobalContext.Provider value={{ socket, state, setState }}>
+        <GlobalContext.Provider value={{ socket, page, setPage }}>
             {children}
         </GlobalContext.Provider>
     );

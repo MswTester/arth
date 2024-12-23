@@ -2,10 +2,11 @@ import express from 'express';
 import { createServer } from 'http';
 import path from 'path';
 import { Server } from 'socket.io';
-import api from './api';
 import handle from './socket';
 import Logger from '../lib/pretty-logger';
 import os from 'os';
+import cloud from './api/cloud';
+import db from './api/db';
 
 // Create an Express app and an HTTP server
 const app = express();
@@ -22,8 +23,9 @@ const io = new Server(server, {
 const PORT = 3000;
 
 // Define the paths to the root and client directories
-const root = path.join(__dirname, '../..');
+export const root = path.join(__dirname, '../..');
 const client = path.join(root, 'dist/client');
+const dir = path.join(root, 'dir');
 
 // Serve static files from the client directory
 app.use(express.static(client));
@@ -32,7 +34,8 @@ app.get('*', (req, res) => {
 });
 
 // Define the API routes
-api(app);
+cloud(app);
+db(app);
 
 // Handle socket connections
 handle(io);
