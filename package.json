@@ -8,7 +8,7 @@
     "build:server": "tsc",
     "build": "npm run build:server && npm run build:client",
     "start": "node dist/server/index.js",
-    "dev:server": "nodemon --watch src/server/**/* --exec ts-node src/server/index.ts",
+    "dev:server": "nodemon",
     "dev:client": "esbuild src/client/index.tsx --bundle --outfile=dist/client/index.js --sourcemap --watch",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
