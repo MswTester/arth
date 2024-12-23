@@ -7,6 +7,7 @@ import Logger from '../lib/pretty-logger';
 import os from 'os';
 import cloud from './api/cloud';
 import db from './api/db';
+import { readFileSync } from 'fs';
 
 // Create an Express app and an HTTP server
 const app = express();
@@ -23,9 +24,19 @@ const io = new Server(server, {
 const PORT = 3000;
 
 // Define the paths to the root and client directories
-export const root = path.join(__dirname, '../..');
-const client = path.join(root, 'dist/client');
+export const root = path.join(__dirname, '/../..');
+const client = path.join(root, '/dist/client');
+
+// Directory setup
 const dir = path.join(root, 'dir');
+const config:Record<string, any> = Object.fromEntries(readFileSync(path.join(dir, '.config'), 'utf-8').split('\n').map((line) => line.split('=')));
+const dir_root = path.join(dir, config.root || '/');
+const dir_cloud = path.join(dir, config.cloud || '/cloud');
+const dir_db = path.join(dir, config.db || '/db');
+
+Logger.log("Root:", dir_cloud);
+Logger.log("Cloud:", dir_cloud);
+Logger.log("DB:", dir_db);
 
 // Serve static files from the client directory
 app.use(express.static(client));
