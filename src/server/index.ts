@@ -69,4 +69,6 @@ server.listen(PORT, "0.0.0.0", () => {
     Logger.info("OS type:", os.type());
     Logger.info("Hostname:", os.hostname());
     Logger.info("Node version:", process.version);
+    const isAndroid = os.platform() === 'android' && os.arch().startsWith('arm');
+    if(!isAndroid) Logger.warn("Host must be in android environment.");
 });
