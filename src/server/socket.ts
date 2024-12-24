@@ -4,7 +4,7 @@ import zone from "./socket/zone";
 
 const log = (id: string, ...args: any[]) => Logger.header(`(${id})`, 'yellow', ...args);
 
-const handle = (io: Server) => {
+const handle = (io: Server, pin: string) => {
     io.on('connection', (socket) => {
         log(socket.id, 'Client connected');
 
@@ -32,6 +32,10 @@ const handle = (io: Server) => {
         socket.on('log', (...args: any[]) => {
             log(socket.id, ...args);
         });
+
+        socket.on('unlock', (_pin: string) => {
+            socket.emit('unlock', _pin === pin);
+        })
 
         socket.on('disconnect', (data) => {
             log(socket.id, 'Client disconnected');

@@ -25,6 +25,7 @@ const io = new Server(server, {
 });
 
 // Define the constants
+const PIN = '0000';
 const PORT = 3000;
 const INTERVAL = 500;
 const EXPRESS_LIMIT = '8mb';
@@ -77,7 +78,7 @@ const loop = setInterval(() => {
 }, INTERVAL);
 
 // Handle socket connections
-handle(io);
+handle(io, PIN);
 
 // Start the server
 server.listen(PORT, "0.0.0.0", () => {

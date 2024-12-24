@@ -12,7 +12,7 @@ const GlobalContext = createContext<GlobalContextProps|undefined>(undefined);
 
 const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     const socket = useSocket();
-    const [page, setPage] = useState<string>('');
+    const [page, setPage] = useState<string>('lock');
 
     return (
         <GlobalContext.Provider value={{ socket, page, setPage }}>

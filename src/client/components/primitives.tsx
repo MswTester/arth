@@ -1,59 +1,140 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { motion } from 'framer-motion';
+import { cvt } from './util';
 
-const cvt = (value: string | number) => {
-    if(typeof value === 'number') return `${value}px`;
-    switch(value){
-        case 'full': return '100%';
-        case 'half': return '50%';
-        case 'start': return 'flex-start';
-        case 'end': return 'flex-end';
-        default: return value;
-    }
-}
-
-const Div = styled.div<{
+interface IPaddingMarginMixin {
     $padding?: string;
     $margin?: string;
-}>`
-    padding: ${props => props.$padding || '0'};
-    margin: ${props => props.$margin || '0'};
+}
+
+const paddingMarginMixin = css<IPaddingMarginMixin>`
+    padding: ${p => cvt(p.$padding || '0')};
+    margin: ${p => cvt(p.$margin || '0')};
+`;
+
+interface ISizeMixin {
+    $width?: string;
+    $height?: string;
+}
+
+const sizeMixin = css<ISizeMixin>`
+    width: ${p => cvt(p.$width || 'auto')};
+    height: ${p => cvt(p.$height || 'auto')};
+`;
+
+interface ICommonStyleMixin {
+    $color?: string;
+    $size?: string;
+    $weight?: string;
+    $background?: string;
+    $border?: string;
+    $rounded?: string;
+}
+
+const commonStyleMixin = css<ICommonStyleMixin>`
+    color: ${p => cvt(p.$color || 'inherit')};
+    font-size: ${p => cvt(p.$size || 'var(--body)')};
+    font-weight: ${p => cvt(p.$weight || '400')};
+    background-color: ${p => cvt(p.$background || 'transparent')};
+    border: ${p => cvt(p.$border || 'none')};
+    border-radius: ${p => cvt(p.$rounded || '0')};
+`;
+
+interface IFlexMixin {
+    $justify?: string;
+    $items?: string;
+    $wrap?: string;
+    $gap?: string;
+}
+
+const flexMixin = css<IFlexMixin>`
+    display: flex;
+    justify-content: ${p => cvt(p.$justify || 'center')};
+    align-items: ${p => cvt(p.$items || 'center')};
+    flex-wrap: ${p => p.$wrap || 'nowrap'};
+    gap: ${p => cvt(p.$gap || '0')};
+`;
+
+const Div = styled(motion.div)<IPaddingMarginMixin & ISizeMixin>`
+    ${paddingMarginMixin}
+    ${sizeMixin}
+`;
+
+const Link = styled(motion.a)<IPaddingMarginMixin & ISizeMixin>`
+    ${paddingMarginMixin}
+    ${sizeMixin}
+    text-decoration: none;
+`;
+
+const Button = styled(motion.button)<IPaddingMarginMixin & ISizeMixin & ICommonStyleMixin>`
+    ${paddingMarginMixin}
+    ${sizeMixin}
+    ${commonStyleMixin}
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+`;
+
+const Input = styled(motion.input)<{
+    $center?: boolean;
+} & IPaddingMarginMixin & ISizeMixin & ICommonStyleMixin>`
+    ${paddingMarginMixin}
+    ${sizeMixin}
+    ${commonStyleMixin}
+    outline: none;
+    text-align: ${p => (p.$center ? 'center' : 'left')};
+`;
+
+const Box = styled(Div)<ISizeMixin & ICommonStyleMixin>`
+    ${sizeMixin}
+    ${commonStyleMixin}
+`;
+
+const Image = styled(motion.img)<{
+    $rounded?: string;
+} & ISizeMixin>`
+    ${sizeMixin}
+    border-radius: ${p => cvt(p.$rounded || '0')};
+`;
+
+const Video = styled(motion.video)<{
+    $rounded?: string;
+} & ISizeMixin>`
+    ${sizeMixin}
+    border-radius: ${p => cvt(p.$rounded || '0')};
 `;
 
 const Flex = styled(Div)<{
-    $justify?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly';
-    $items?: 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch';
-    $wrap?: 'wrap' | 'nowrap' | 'wrap-reverse';
-    $gap?: string;
-    $width?: string;
-    $height?: string;
-}>`
-    display: flex;
-    justify-content: ${props => cvt(props.$justify || 'center')};
-    align-items: ${props => cvt(props.$items || 'center')};
-    flex-wrap: ${props => props.$wrap || 'nowrap'};
-    gap: ${props => cvt(props.$gap || '0')};
-    width: ${props => cvt(props.$width || 'auto')};
-    height: ${props => cvt(props.$height || 'auto')};
+    $background?: string;
+} & IFlexMixin>`
+    ${flexMixin}
+    width: 100%;
+    background-color: ${p => cvt(p.$background || 'transparent')};
 `;
 
 const Row = styled(Flex)<{
     $reverse?: boolean;
 }>`
-    flex-direction: ${props => props.$reverse ? 'row-reverse' : 'row'};
+    flex-direction: ${p => (p.$reverse ? 'row-reverse' : 'row')};
 `;
 
 const Column = styled(Flex)<{
     $reverse?: boolean;
 }>`
-    flex-direction: ${props => props.$reverse ? 'column-reverse' : 'column'};
+    flex-direction: ${p => (p.$reverse ? 'column-reverse' : 'column')};
 `;
 
 const Container = styled(Div)<{
     $center?: boolean;
+    $background?: string;
+    $scroll?: boolean;
 }>`
     display: flex;
-    justify-content: ${props => props.$center ? 'center' : 'flex-start'};
-    align-items: ${props => props.$center ? 'center' : 'flex-start'};
+    flex-direction: column;
+    justify-content: ${p => (p.$center ? 'center' : 'flex-start')};
+    align-items: ${p => (p.$center ? 'center' : 'flex-start')};
+    background-color: ${p => cvt(p.$background || 'transparent')};
+    overflow: ${p => (p.$scroll ? 'auto' : 'hidden')};
     width: 100%;
     height: 100%;
 `;
@@ -65,20 +146,36 @@ const Overlay = styled(Container)<{
     position: absolute;
     top: 0;
     left: 0;
-    background-color: ${props => cvt(props.$color || 'rgba(0, 0, 0, 0.5)')};
-    opacity: ${props => cvt(props.$opacity || 1)};
+    background-color: ${p => cvt(p.$color || 'rgba(0, 0, 0, 0.5)')};
+    opacity: ${p => cvt(p.$opacity || 1)};
 `;
 
 const Float = styled(Div)<{
-    $position?: 'top' | 'right' | 'bottom' | 'left' | 'center' | 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+    $position?: string;
     $distance?: string;
 }>`
     position: fixed;
-    top: ${props => props.$position === 'top' || props.$position === 'top-right' || props.$position === 'top-left' ? cvt(props.$distance || '0') : props.$position === 'center' ? '50%' : "auto" };
-    right: ${props => props.$position === 'right' || props.$position === 'top-right' || props.$position === 'bottom-right' ? cvt(props.$distance || '0') : "auto" };
-    bottom: ${props => props.$position === 'bottom' || props.$position === 'bottom-right' || props.$position === 'bottom-left' ? cvt(props.$distance || '0') : "auto" };
-    left: ${props => props.$position === 'left' || props.$position === 'top-left' || props.$position === 'bottom-left' ? cvt(props.$distance || '0') : props.$position === 'center' ? '50%' : "auto" };
-    transform: ${props => props.$position === 'center' ? 'translate(-50%, -50%)' : 'none'};
+    top: ${p =>
+        ['top', 'top-right', 'top-left'].includes(p.$position || '')
+            ? cvt(p.$distance || '0')
+            : p.$position === 'center'
+            ? '50%'
+            : 'auto'};
+    right: ${p =>
+        ['right', 'top-right', 'bottom-right'].includes(p.$position || '')
+            ? cvt(p.$distance || '0')
+            : 'auto'};
+    bottom: ${p =>
+        ['bottom', 'bottom-right', 'bottom-left'].includes(p.$position || '')
+            ? cvt(p.$distance || '0')
+            : 'auto'};
+    left: ${p =>
+        ['left', 'top-left', 'bottom-left'].includes(p.$position || '')
+            ? cvt(p.$distance || '0')
+            : p.$position === 'center'
+            ? '50%'
+            : 'auto'};
+    transform: ${p => (p.$position === 'center' ? 'translate(-50%, -50%)' : 'none')};
 `;
 
 const Text = styled(Div)<{
@@ -88,11 +185,26 @@ const Text = styled(Div)<{
     $align?: 'left' | 'right' | 'center' | 'justify';
     $transform?: 'uppercase' | 'lowercase' | 'capitalize';
 }>`
-    font-size: ${props => cvt(props.$size || '16px')};
-    font-weight: ${props => cvt(props.$weight || 400)};
-    color: ${props => props.$color || 'black'};
-    text-align: ${props => props.$align || 'left'};
-    text-transform: ${props => props.$transform || 'none'};
+    font-size: ${p => cvt(p.$size || 'var(--body)')};
+    font-weight: ${p => cvt(p.$weight || '400')};
+    color: ${p => cvt(p.$color || 'var(--content)')};
+    text-align: ${p => p.$align || 'left'};
+    text-transform: ${p => p.$transform || 'none'};
 `;
 
-export { Div, Flex, Row, Column, Container, Overlay, Float, Text };
+export {
+    Div,
+    Link,
+    Button,
+    Input,
+    Box,
+    Image,
+    Video,
+    Flex,
+    Row,
+    Column,
+    Container,
+    Overlay,
+    Float,
+    Text,
+};
