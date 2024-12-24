@@ -1,7 +1,6 @@
 import { Server } from "socket.io";
 import Logger from "../lib/pretty-logger";
 import zone from "./socket/zone";
-import sys from "./socket/sys";
 
 const log = (id: string, ...args: any[]) => Logger.header(`(${id})`, 'yellow', ...args);
 
@@ -14,15 +13,15 @@ const handle = (io: Server) => {
 
         // Default socket events
 
-        socket.on('join', (data:string) => {
+        socket.on('join', (data: string) => {
             socket.join(data);
         });
 
-        socket.on('leave', (data:string) => {
+        socket.on('leave', (data: string) => {
             socket.leave(data);
         });
 
-        socket.on('message', (data:MessageData) => {
+        socket.on('message', (data: MessageData) => {
             socket.to(data.room).emit(data.channel, data.data);
         });
 

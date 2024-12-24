@@ -1,6 +1,6 @@
 declare global {
 
-    declare enum FilterOption {
+    enum FilterOption {
         $eq = "$eq",        // Equal
         $ne = "$ne",        // Not Equal
         $gt = "$gt",        // Greater Than

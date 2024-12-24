@@ -93,15 +93,6 @@ server.listen(PORT, "0.0.0.0", () => {
     Logger.info("CPUs:", os.cpus().length);
     Logger.info("OS type:", os.type());
     Logger.info("Hostname:",os.hostname());
-    Logger.info("Username:", os.userInfo());
-    Logger.info("Total memory:", os.totalmem());
-    Logger.info("Free memory:", os.freemem());
-    Logger.info("Uptime:", os.uptime());
-    Logger.info("Load average:", os.loadavg());
-    Logger.info("Release:", os.release());
-    Logger.info("Temp dir:", os.tmpdir());
-    Logger.info("Home dir:", os.homedir());
-    Logger.info(os.machine());
     Logger.info("Node version:", process.version);
     const isAndroid = os.platform() === 'android' && os.arch().startsWith('arm');
     if(!isAndroid) Logger.warn("Host must be in android environment to use all features.");
