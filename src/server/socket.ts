@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import Logger from "../lib/pretty-logger";
-import zone from "./socket/zone";
+import zone from "./sockets/zone";
 
 const log = (id: string, ...args: any[]) => Logger.header(`(${id})`, 'yellow', ...args);
 

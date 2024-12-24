@@ -1,8 +1,8 @@
 import { Express } from 'express';
 import { Server } from 'socket.io';
-import CloudSystem from '../lib/cloud';
+import CloudSystem from '../services/cloud';
 import { join } from 'path';
-import { publicCors } from '../lib/cors';
+import { publicCors } from '../services/cors';
 
 const cloud = (app: Express, cloudDir:string, io: Server) => {
     app.get('/api/cloud/list', publicCors, async (req, res) => {

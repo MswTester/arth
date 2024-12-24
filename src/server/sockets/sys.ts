@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import { getBattery, getCPU, getMemory, getStorage } from "../lib/sys";
+import { getBattery, getCPU, getMemory, getStorage } from "../controllers/sys";
 
 const sysInterval = async (io: Server) => {
     io.to('interval-sys').emit('interval-sys', {

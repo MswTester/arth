@@ -5,13 +5,13 @@ import { Server } from 'socket.io';
 import handle from './socket';
 import Logger from '../lib/pretty-logger';
 import os from 'os';
-import cloud from './api/cloud';
-import db from './api/db';
+import cloud from './controllers/cloud';
+import db from './controllers/db';
+import sys from './controllers/sys';
 import Config from '../lib/config-reader';
 import { existsSync, mkdirSync } from 'fs';
-import sys from './api/sys';
-import { publicCors } from './lib/cors';
-import sysInterval from './socket/sys';
+import { publicCors } from './services/cors';
+import sysInterval from './sockets/sys';
 
 // Create an Express app and an HTTP server
 const app = express();
@@ -67,8 +67,7 @@ sys(app);
 // Serve static files from the client directory
 app.use(express.static(publicPath));
 app.use(express.static(client));
-app.use(publicCors);
-app.get('*', (req, res) => {
+app.get('*', publicCors, (req, res) => {
     res.sendFile(path.join(publicPath, '/index.html'));
 });
 

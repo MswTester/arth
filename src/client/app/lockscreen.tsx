@@ -1,13 +1,13 @@
 import React from 'react';
-import { Column, Container, Image, Text } from '../components/primitives'
+import { Column, Container, Image, Text } from '../components/ui/primitives'
 
 const LockScreen = () => {
     return <Container $center $background='background'>
-        <Column>
-            <Image src='icon_black.svg' $width='250px'></Image>
+        <Column $padding='lg'>
+            <Image src='icon_black.svg' $width='20md'></Image>
         </Column>
         <Column>
-            <Text $align="center">Test</Text>
+            <Text $align="center" $size='body' $weight='regular'>A dummy description for test this page.</Text>
         </Column>
     </Container>
 }

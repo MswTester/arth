@@ -1,9 +1,9 @@
 import React from 'react';
-import { Container, Text } from '../components/primitives'
+import { Container, Text } from '../components/ui/primitives'
 
-const ErrorScreen = () => {
+const ErrorScreen = () => { 
     return <Container $center>
-        <Text>Oops! Something went wrong!</Text>
+        <Text $size='headline' $weight='strong'>Oops! Something went wrong!</Text>
     </Container>
 }
 

@@ -1,7 +1,7 @@
 import { Express } from 'express';
-import { getBattery, getCPU, getMemory, getStorage } from '../lib/sys';
+import { getBattery, getCPU, getMemory, getStorage } from '../services/sys';
 import os from 'os';
-import { publicCors } from '../lib/cors';
+import { publicCors } from '../services/cors';
 
 const sys = (app: Express) => {
     // Get system info

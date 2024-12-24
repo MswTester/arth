@@ -5,6 +5,7 @@
 }
 
 html, body{
+    font-family: 'Pretendard', sans-serif;
     margin: 0;
     padding: 0;
     width: 100vw;
@@ -26,15 +27,15 @@ html, body{
     --sm: 16px;
     --xs: 12px;
     /* font weight vars */
-    --strong: 700;
-    --regular: 500;
+    --strong: 600;
+    --regular: 400;
     --light: 300;
     /* font size vars */
     --display: 4rem;
     --headline: 2.5rem;
     --title: 2rem;
-    --body: 1.25rem;
-    --caption: 1rem;
+    --body: 1.5rem;
+    --caption: 1.25rem;
     /* color vars */
     --background: #F9FAFB;
     --background-muted: #E5E7EB;
@@ -79,8 +80,8 @@ html, body{
         --display: 3.5rem;
         --headline: 2rem;
         --title: 1.75rem;
-        --body: 1rem;
-        --caption: 0.875rem;
+        --body: 1.25rem;
+        --caption: 1rem;
     }
 }
 
@@ -90,12 +91,12 @@ html, body{
         --lg: 16px;
         --md: 12px;
         --sm: 8px;
-        --xs: 4px;
+        --xs: 6px;
 
         --display: 3rem;
         --headline: 1.75rem;
         --title: 1.5rem;
-        --body: 0.875rem;
-        --caption: 0.75rem;
+        --body: 1rem;
+        --caption: 0.875rem;
     }
 }
