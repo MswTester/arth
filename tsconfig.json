@@ -6,9 +6,8 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "typeRoots": ["./node_modules/@types", "./src/types.d.ts"],
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/types.d.ts"],
   "exclude": ["src/client/**/*"]
 }
