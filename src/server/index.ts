@@ -27,6 +27,7 @@ const io = new Server(server, {
 // Define the constants
 const PORT = 3000;
 const INTERVAL = 500;
+const EXPRESS_LIMIT = '8mb';
 
 // Define the paths to the root and client directories
 export const root = path.join(__dirname, '/../..');
@@ -54,15 +55,18 @@ if(!existsSync(dir_db)){
     mkdirSync(dir_db);
 }
 
+// Define the middleware
+app.use(express.json({limit: EXPRESS_LIMIT}));
+
 // Define the API routes;
 cloud(app, dir_cloud, io);
 db(app, dir_db);
 sys(app);
 
 // Serve static files from the client directory
-app.use(publicCors);
 app.use(express.static(publicPath));
 app.use(express.static(client));
+app.use(publicCors);
 app.get('*', (req, res) => {
     res.sendFile(path.join(publicPath, '/index.html'));
 });
@@ -85,7 +89,7 @@ server.listen(PORT, "0.0.0.0", () => {
     Object.keys(ifaces).forEach((ifname) => {
         ifaces[ifname]?.forEach((iface) => {
             if (iface.family !== 'IPv4' || iface.internal !== false) return;
-            Logger.bracket(ifname, 'cyan', iface.address);
+            Logger.info(ifname, "|", iface.address);
         });
     });
     Logger.info("Platform:", os.platform());

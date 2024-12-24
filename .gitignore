@@ -129,4 +129,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Logs
 public/logs/main.log
+
+# Dir
+dir/*
+!dir/.config

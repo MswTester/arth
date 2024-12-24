@@ -9,7 +9,7 @@ interface FileInfo {
     modified: number;
 }
 
-class FileSystem {
+class CloudSystem {
     static async list(dir: string): Promise<FileInfo[]> {
         const files = await readdir(dir);
         return Promise.all(
@@ -30,31 +30,32 @@ class FileSystem {
         dir: string,
         name: string,
         type: "file" | "dir" = "file",
-        maxDepths = 4
+        depths:number = 4
     ): Promise<FileInfo[]> {
-        if (maxDepths < 0) return [];
-        const files = await FileSystem.list(dir);
+        if (depths < 0) return [];
+        const files = await CloudSystem.list(dir);
         const matched = files.filter(
             (f) => f.name === name && (type === "file" ? !f.isDirectory : f.isDirectory)
         );
         const subdirs = files.filter((f) => f.isDirectory);
         const results = await Promise.all(
-            subdirs.map((sd) => FileSystem.find(join(dir, sd.name), name, type, maxDepths - 1))
+            subdirs.map((sd) => CloudSystem.find(join(dir, sd.name), name, type, depths - 1))
         );
         return matched.concat(...results);
     }
 
-    static async findContent(dir: string, content: string): Promise<FileInfo[]> {
+    static async findContent(dir: string, content: string, depths:number = 4): Promise<FileInfo[]> {
+        if (depths < 0) return [];
         const result: FileInfo[] = [];
-        const files = await FileSystem.list(dir);
+        const files = await CloudSystem.list(dir);
 
         await Promise.all(
             files.map(async (file) => {
                 const path = join(dir, file.name);
                 if (file.isDirectory) {
-                    result.push(...(await FileSystem.findContent(path, content)));
+                    result.push(...(await CloudSystem.findContent(path, content, depths - 1)));
                 } else {
-                    const data = await FileSystem.read(path);
+                    const data = await CloudSystem.read(path);
                     if (typeof data === "string" && data.includes(content)) {
                         result.push(file);
                     }
@@ -83,7 +84,7 @@ class FileSystem {
     }
 
     static async readMany(dirs: string[]): Promise<string[]> {
-        return Promise.all(dirs.map((dir) => FileSystem.read(dir)));
+        return Promise.all(dirs.map((dir) => CloudSystem.read(dir)));
     }
 
     static async write(dir: string, data: string): Promise<void> {
@@ -91,7 +92,7 @@ class FileSystem {
     }
 
     static async writeMany(dirs: string[], data: string[]): Promise<void> {
-        await Promise.all(dirs.map((dir, i) => FileSystem.write(dir, data[i])));
+        await Promise.all(dirs.map((dir, i) => CloudSystem.write(dir, data[i])));
     }
 
     static async delete(dir: string): Promise<void> {
@@ -99,7 +100,7 @@ class FileSystem {
     }
 
     static async deleteMany(dirs: string[]): Promise<void> {
-        await Promise.all(dirs.map((dir) => FileSystem.delete(dir)));
+        await Promise.all(dirs.map((dir) => CloudSystem.delete(dir)));
     }
 
     static async createDir(dir: string): Promise<void> {
@@ -115,7 +116,7 @@ class FileSystem {
     }
 
     static async moveMany(dirs: string[], newDirTo: string): Promise<void> {
-        await Promise.all(dirs.map((dir) => FileSystem.move(dir, newDirTo)));
+        await Promise.all(dirs.map((dir) => CloudSystem.move(dir, newDirTo)));
     }
 
     static async copy(oldDir: string, newDirTo: string): Promise<void> {
@@ -123,7 +124,7 @@ class FileSystem {
     }
 
     static async copyMany(dirs: string[], newDirTo: string): Promise<void> {
-        await Promise.all(dirs.map((dir) => FileSystem.copy(dir, newDirTo)));
+        await Promise.all(dirs.map((dir) => CloudSystem.copy(dir, newDirTo)));
     }
 
     static async rename(dir: string, name: string): Promise<void> {
@@ -131,8 +132,8 @@ class FileSystem {
     }
 
     static async renameMany(dirs: string[], name: string): Promise<void> {
-        await Promise.all(dirs.map((dir, i) => FileSystem.rename(dir, `${name}_${i}`)));
+        await Promise.all(dirs.map((dir, i) => CloudSystem.rename(dir, `${name}_${i}`)));
     }
 }
 
-export default FileSystem;
+export default CloudSystem;

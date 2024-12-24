@@ -1,11 +1,11 @@
 import { Express } from 'express';
 import { getBattery, getCPU, getMemory, getStorage } from '../lib/sys';
 import os from 'os';
-import { privateCors } from '../lib/cors';
+import { publicCors } from '../lib/cors';
 
 const sys = (app: Express) => {
     // Get system info
-    app.get('/api/sys/os', privateCors, async (req, res) => {
+    app.get('/api/sys/os', publicCors, async (req, res) => {
         try{
             res.status(200).json({
                 hostname: os.hostname(),
@@ -30,28 +30,28 @@ const sys = (app: Express) => {
     });
 
     // Get CPU usage
-    app.get('/api/sys/cpu', privateCors, async (req, res) => {
+    app.get('/api/sys/cpu', publicCors, async (req, res) => {
         const result = await getCPU();
         if(result.error) res.status(500).json(result);
         res.status(200).json(result);
     });
 
     // Get memory usage
-    app.get('/api/sys/memory', privateCors, async (req, res) => {
+    app.get('/api/sys/memory', publicCors, async (req, res) => {
         const result = await getMemory();
         if(result.error) res.status(500).json(result);
         res.status(200).json(result);
     });
 
     // Get battery status
-    app.get('/api/sys/battery', privateCors, async (req, res) => {
+    app.get('/api/sys/battery', publicCors, async (req, res) => {
         const result = await getBattery();
         if(result.error) res.status(500).json(result);
         res.status(200).json(result);
     });
 
     // Get storage status
-    app.get('/api/sys/storage', privateCors, async (req, res) => {
+    app.get('/api/sys/storage', publicCors, async (req, res) => {
         const result = await getStorage();
         if(result.error) res.status(500).json(result);
         res.status(200).json(result);
