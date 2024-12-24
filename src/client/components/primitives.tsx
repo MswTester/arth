@@ -55,9 +55,8 @@ const flexMixin = css<IFlexMixin>`
     gap: ${p => cvt(p.$gap || '0')};
 `;
 
-const Div = styled(motion.div)<IPaddingMarginMixin & ISizeMixin>`
+const Div = styled(motion.div)<IPaddingMarginMixin>`
     ${paddingMarginMixin}
-    ${sizeMixin}
 `;
 
 const Link = styled(motion.a)<IPaddingMarginMixin & ISizeMixin>`
@@ -182,7 +181,7 @@ const Text = styled(Div)<{
     $size?: string;
     $weight?: string;
     $color?: string;
-    $align?: 'left' | 'right' | 'center' | 'justify';
+    $align?: 'left' | 'right' | 'center';
     $transform?: 'uppercase' | 'lowercase' | 'capitalize';
 }>`
     font-size: ${p => cvt(p.$size || 'var(--body)')};

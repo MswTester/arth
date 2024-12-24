@@ -104,6 +104,7 @@ const cloud = (app: Express, cloudDir:string, io: Server) => {
         const path = req.query.path?.toString() || '';
         try{
             await CloudSystem.createDir(join(cloudDir, path))
+            io.to("cloud-" + join(path, "..")).emit("cloud-createDir", path)
             res.status(200).json({message: 'Directory created successfully'});
         } catch (error) {
             res.status(500).json({error: error.message});
@@ -114,6 +115,7 @@ const cloud = (app: Express, cloudDir:string, io: Server) => {
         const path = req.query.path?.toString() || '';
         try{
             await CloudSystem.createFile(join(cloudDir, path))
+            io.to("cloud-" + join(path, "..")).emit("cloud-createFile", path)
             res.status(200).json({message: 'File created successfully'});
         } catch (error) {
             res.status(500).json({error: error.message});
@@ -147,6 +149,7 @@ const cloud = (app: Express, cloudDir:string, io: Server) => {
         const newDirTo = req.query.newDirTo?.toString() || '';
         try{
             await CloudSystem.copy(join(cloudDir, oldDir), join(cloudDir, newDirTo))
+            io.to("cloud-" + newDirTo).emit("cloud-copy", oldDir);
             res.status(200).json({message: 'File copied successfully'});
         } catch (error) {
             res.status(500).json({error: error.message});
@@ -158,6 +161,7 @@ const cloud = (app: Express, cloudDir:string, io: Server) => {
         const newDirTo = req.query.newDirTo?.toString() || '';
         try{
             await CloudSystem.copyMany(oldDirs.map((oldDir: string) => join(cloudDir, oldDir)), join(cloudDir, newDirTo))
+            io.to("cloud-" + newDirTo).emit("cloud-copyMany", oldDirs);
             res.status(200).json({message: 'Files copied successfully'});
         } catch (error) {
             res.status(500).json({error: error.message});
@@ -169,6 +173,7 @@ const cloud = (app: Express, cloudDir:string, io: Server) => {
         const name = req.query.name?.toString() || '';
         try{
             await CloudSystem.rename(join(cloudDir, dir), name)
+            io.to("cloud-" + join(dir, "..")).emit("cloud-rename", name);
             res.status(200).json({message: 'File renamed successfully'});
         } catch (error) {
             res.status(500).json({error: error.message});
