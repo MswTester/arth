@@ -2,10 +2,10 @@ import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect,
 import { Server, Socket } from "socket.io";
 
 @WebSocketGateway({
-    namespace: 'cloud',
+    namespace: 'db',
     cors: {origin: '*'}
 })
-export class CloudGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class DatabaseGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer() server: Server;
 
     handleConnection(client: Socket, ...args: any[]) {}
